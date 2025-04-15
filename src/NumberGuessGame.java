@@ -22,7 +22,7 @@ public class NumberGuessGame extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
 
-        JLabel instructionLabel = new JLabel("1〜100の数字を当ててね！");
+        JLabel instructionLabel = new JLabel("1〜300の数字を当ててね！");
         inputField = new JTextField(10);
         guessButton = new JButton("答える");
         messageLabel = new JLabel("数字を入力してボタンを押してね");
@@ -35,7 +35,7 @@ public class NumberGuessGame extends JFrame implements ActionListener {
         guessButton.addActionListener(this);
 
         Random rand = new Random();
-        answer = rand.nextInt(100) + 1;
+        answer = rand.nextInt(300) + 1;
     }
 
     @Override
@@ -44,8 +44,8 @@ public class NumberGuessGame extends JFrame implements ActionListener {
             int guess = Integer.parseInt(inputField.getText());
             tries++;
 
-            if (guess < 1 || guess > 100) {
-                messageLabel.setText("1〜100の間で入力してね！");
+            if (guess < 1 || guess > 300) {
+                messageLabel.setText("1〜300の間で入力してね！");
             } else if (guess < answer) {
                 messageLabel.setText("もっと大きいよ！");
             } else if (guess > answer) {
