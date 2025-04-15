@@ -1,32 +1,67 @@
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
-import java.util.Scanner;
 
-public class NumberGuessGame {
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+public class NumberGuessGame extends JFrame implements ActionListener {
+    private JTextField inputField;
+    private JButton guessButton;
+    private JLabel messageLabel;
+    private int answer;
+    private int tries = 0;
+
+    public NumberGuessGame() {
+        setTitle("数当てゲーム");
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+
+        JLabel instructionLabel = new JLabel("1〜100の数字を当ててね！");
+        inputField = new JTextField(10);
+        guessButton = new JButton("答える");
+        messageLabel = new JLabel("数字を入力してボタンを押してね");
+
+        add(instructionLabel);
+        add(inputField);
+        add(guessButton);
+        add(messageLabel);
+
+        guessButton.addActionListener(this);
+
         Random rand = new Random();
+        answer = rand.nextInt(100) + 1;
+    }
 
-        int answer = rand.nextInt(100) + 1;  // 1〜100の数字をつくる
-        int guess = 0;
-        int tries = 0;
-
-        System.out.println("★ 数当てゲーム ★");
-        System.out.println("1〜100の数字を当ててね！");
-
-        while (guess != answer) {
-            System.out.print("数字を入れてね: ");
-            guess = input.nextInt();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            int guess = Integer.parseInt(inputField.getText());
             tries++;
 
-            if (guess < answer) {
-                System.out.println("もっと大きいよ！");
+            if (guess < 1 || guess > 100) {
+                messageLabel.setText("1〜100の間で入力してね！");
+            } else if (guess < answer) {
+                messageLabel.setText("もっと大きいよ！");
             } else if (guess > answer) {
-                System.out.println("もっと小さいよ！");
+                messageLabel.setText("もっと小さいよ！");
             } else {
-                System.out.println("正解！" + tries + "回で当たったよ！");
+                messageLabel.setText("正解！" + tries + "回で当たったよ🎉");
+                guessButton.setEnabled(false); // ボタン無効に
             }
+        } catch (NumberFormatException ex) {
+            messageLabel.setText("数字を入れてね！");
         }
+    }
 
-        input.close();
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new NumberGuessGame().setVisible(true);
+        });
     }
 }
